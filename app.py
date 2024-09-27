@@ -69,7 +69,43 @@ def convert_timestamp(timestamp: int) -> str:
 def clock_in():
     """Read data sent from Slack then push to db."""
 
-    slack_timestamp = request.headers['x-slack-request-timestamp']
+    # check if timestamp header exists
+    if 'x-slack-request-timestamp' in request.headers:
+        slack_timestamp = request.headers['x-slack-request-timestamp']
+    else:
+        logging.error('Timestamp missing from Slack')
+        return {
+            'status': 'failed',
+            'msg': 'Timestamp missing from Slack!'
+        }, 400
+
+    slack_form_items_required = [
+        'token',
+        'team_id',
+        'team_domain',
+        'channel_id',
+        'channel_name',
+        'user_id',
+        'user_name',
+        'command',
+        'text',
+        'api_app_id',
+        'is_enterprise_install',
+        'response_url',
+        'trigger_id'
+    ]
+
+    # return 400 if any of the required form items are missing from Slack's payload
+    for item in slack_form_items_required:
+        if item not in request.form:
+            err_msg = f'{item} missing from Slack http body.'
+            logging.error(err_msg)
+            return {
+                'status': 'failed',
+                'msg': err_msg
+            }, 400
+
+    #
     channel_id = request.form['channel_id']
 
     try:
@@ -98,9 +134,9 @@ def clock_in():
 
         logging.info(response)
 
-        send_msg_to_slack(msg="Timestamp saved!", channel_id=channel_id)
+        # send_msg_to_slack(msg="Timestamp saved!", channel_id=channel_id)
 
-        return 'Timestamp saved!'
+        return 'Timestamp saved!', 200
 
     except Exception as e:
         logging.exception(e)
