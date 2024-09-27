@@ -29,9 +29,25 @@ client = WebClient(token=slack_token)
 # main flask instance
 app = Flask(__name__)
 
+slack_form_items = [
+    'token',
+    'team_id',
+    'team_domain',
+    'channel_id',
+    'channel_name',
+    'user_id',
+    'user_name',
+    'command',
+    'text',
+    'api_app_id',
+    'is_enterprise_install',
+    'response_url',
+    'trigger_id'
+]
+
 
 #
-def send_msg_to_slack(msg: str, channel_id: str):
+def send_msg_to_slack(msg: str, channel_id: str) -> None:
     """Responds back to a provided channel"""
 
     try:
@@ -79,24 +95,8 @@ def clock_in():
             'msg': 'Timestamp missing from Slack!'
         }, 400
 
-    slack_form_items_required = [
-        'token',
-        'team_id',
-        'team_domain',
-        'channel_id',
-        'channel_name',
-        'user_id',
-        'user_name',
-        'command',
-        'text',
-        'api_app_id',
-        'is_enterprise_install',
-        'response_url',
-        'trigger_id'
-    ]
-
-    # return 400 if any of the required form items are missing from Slack's payload
-    for item in slack_form_items_required:
+    # return 400 if any of the form items are missing from Slack's payload
+    for item in slack_form_items:
         if item not in request.form:
             err_msg = f'{item} missing from Slack http body.'
             logging.error(err_msg)
@@ -133,11 +133,16 @@ def clock_in():
         )
 
         logging.info(response)
-
         # send_msg_to_slack(msg="Timestamp saved!", channel_id=channel_id)
 
-        return 'Timestamp saved!', 200
+        return {
+            'status': 'Success',
+            'msg': 'Timestamp saved!'
+        }, 200
 
     except Exception as e:
         logging.exception(e)
-        return 'Failed to save timestamp to database! Please contact Client Solutions.'
+        return {
+            'status': 'failed',
+            'msg': 'Failed to save timestamp to database! Please contact Client Solutions.'
+        }, 500
