@@ -18,12 +18,12 @@ logging.basicConfig(
 
 # init supabase
 load_dotenv()
-url: str = os.environ.get("SUPABASE_URL")
-key: str = os.environ.get("SUPABASE_KEY")
+url: str = os.environ.get('SUPABASE_URL')
+key: str = os.environ.get('SUPABASE_KEY')
 supabase: Client = create_client(url, key)
 
 # init slack sdk
-slack_token = os.environ["SLACK_BOT_TOKEN"]
+slack_token = os.environ['SLACK_BOT_TOKEN']
 client = WebClient(token=slack_token)
 
 # main flask instance
@@ -48,7 +48,7 @@ slack_form_items = [
 
 #
 def send_msg_to_slack(msg: str, channel_id: str) -> None:
-    """Responds back to a provided channel"""
+    '''Responds back to a provided channel'''
 
     try:
         response = client.chat_postMessage(
@@ -59,14 +59,14 @@ def send_msg_to_slack(msg: str, channel_id: str) -> None:
         logging.info(response)
 
     except SlackApiError as e:
-        # You will get a SlackApiError if "ok" is False
-        assert e.response["error"]
+        # You will get a SlackApiError if 'ok' is False
+        assert e.response['error']
         logging.error(e)
 
 
 # convert epoch time to human time
 def convert_timestamp(timestamp: int) -> str:
-    """Convert Slack's timestamp into human readable MIL time format"""
+    '''Convert Slack's timestamp into human readable MIL time format'''
 
     # Create a timezone-aware datetime object for Philippine Time
     philippine_tz = pytz.timezone('Asia/Manila')
@@ -83,7 +83,7 @@ def convert_timestamp(timestamp: int) -> str:
 # main route to be used by slack
 @app.route('/clock-in', methods=['POST'])
 def clock_in():
-    """Read data sent from Slack then push to db."""
+    '''Read data sent from Slack then push to db.'''
 
     # check if timestamp header exists
     if 'x-slack-request-timestamp' in request.headers:
@@ -110,30 +110,30 @@ def clock_in():
 
     try:
         response = (
-            supabase.table("Slack Timestamp")
+            supabase.table('Slack Timestamp')
             .insert(
                 {
-                    "x-slack-request-timestamp": slack_timestamp,
-                    "token": request.form['token'],
-                    "team_id": request.form['team_id'],
-                    "team_domain": request.form['team_domain'],
-                    "channel_id": channel_id,
-                    "channel_name": request.form['channel_name'],
-                    "user_id": request.form['user_id'],
-                    "user_name": request.form['user_name'],
-                    "command": request.form['command'],
-                    "text": request.form['text'],
-                    "api_app_id": request.form['api_app_id'],
-                    "is_enterprise_install": request.form['is_enterprise_install'],
-                    "response_url": request.form['response_url'],
-                    "trigger_id": request.form['trigger_id'],
-                    "timestamp": convert_timestamp(int(slack_timestamp))
+                    'x-slack-request-timestamp': slack_timestamp,
+                    'token': request.form['token'],
+                    'team_id': request.form['team_id'],
+                    'team_domain': request.form['team_domain'],
+                    'channel_id': channel_id,
+                    'channel_name': request.form['channel_name'],
+                    'user_id': request.form['user_id'],
+                    'user_name': request.form['user_name'],
+                    'command': request.form['command'],
+                    'text': request.form['text'],
+                    'api_app_id': request.form['api_app_id'],
+                    'is_enterprise_install': request.form['is_enterprise_install'],
+                    'response_url': request.form['response_url'],
+                    'trigger_id': request.form['trigger_id'],
+                    'timestamp': convert_timestamp(int(slack_timestamp))
                 }
             ).execute()
         )
 
         logging.info(response)
-        # send_msg_to_slack(msg="Timestamp saved!", channel_id=channel_id)
+        # send_msg_to_slack(msg='Timestamp saved!', channel_id=channel_id)
 
         return {
             'status': 'Success',
