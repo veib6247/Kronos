@@ -71,17 +71,12 @@ def convert_timestamp(timestamp: str):
     # Create a timezone-aware datetime object for Philippine Time
     philippine_tz = pytz.timezone('Asia/Manila')
 
-    try:
-        # Convert the timestamp to Philippine Standard Time
-        philippine_time = datetime.fromtimestamp(
-            int(timestamp),
-            tz=philippine_tz
-        )
-        return str(philippine_time.strftime('%Y-%m-%d %H:%M:%S'))
-    except ValueError:
-        raise Exception('Invalid timestamp value!')
-    except:
-        raise Exception('Failed to format epoch to PH timezone')
+    # Convert the timestamp to Philippine Standard Time
+    philippine_time = datetime.fromtimestamp(
+        int(timestamp),
+        tz=philippine_tz
+    )
+    return str(philippine_time.strftime('%Y-%m-%d %H:%M:%S'))
 
 
 # main route to be used by slack
@@ -109,14 +104,14 @@ def clock_in():
                 'msg': err_msg
             }, 400
 
-    # try parse timestamp
     try:
-        timestamp = convert_timestamp(slack_timestamp)
-    except Exception as e:
+        # try parse timestamp
+        int(slack_timestamp)
+    except ValueError as e:
         logging.error(e)
         return {
             'status': 'failed',
-            'msg': e
+            'msg': 'Unable to parse timestamp from Slack, invalid value'
         }, 400
 
     try:
@@ -138,7 +133,7 @@ def clock_in():
                     'is_enterprise_install': request.form['is_enterprise_install'],
                     'response_url': request.form['response_url'],
                     'trigger_id': request.form['trigger_id'],
-                    'timestamp': timestamp
+                    'timestamp': convert_timestamp(slack_timestamp)
                 }
             ).execute()
         )
