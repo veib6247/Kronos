@@ -79,7 +79,7 @@ def convert_timestamp(timestamp: str):
 
 
 # main route to be used by slack
-@app.route('/time/<str:action>', methods=['POST'])
+@app.route('/time/<action>', methods=['POST'])
 def time(action: str):
     '''Read data sent from Slack then push to db'''
 
