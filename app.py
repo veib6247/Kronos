@@ -46,24 +46,37 @@ slack_form_items = [
     'trigger_id'
 ]
 
+# list of valid url param actions
+actions = [
+    'in',
+    'out',
+    'break-15',
+    'break-30',
+    'break-60',
+    'break-90'
+]
+
 
 #
-def send_msg_to_slack(action: str, channel_id: str) -> None:
+def send_msg_to_slack(action: str, user_id: str, channel_id: str):
     '''Respond back to Slack on the same channel where the user sent the command'''
 
+    if action == 'in' or action == 'out':
+        response_text = f'{user_id} have clocked {action}'
+    else:
+        response_text = 'others'
+
+    logging.info(response_text)
+
+    # todo: reinstall app to Slack workspace for further testing
     try:
         response = client.chat_postMessage(
             channel=channel_id,
-            text=f'You have clocked {action}.'
+            text=response_text
         )
-        logging.info(response)
+        return response
     except SlackApiError as e:
-        assert e.response['error']
-        logging.error(e)
-        return {
-            'status': 'failed',
-            'msg': e
-        }, 400
+        return e
 
 
 #
@@ -83,7 +96,11 @@ def convert_timestamp(timestamp: str):
 def time(action: str):
     '''Read data sent from Slack then push to db'''
 
-    logging.info(f'User wants to {action}')
+    if action not in actions:
+        return {
+            'status': 'failed',
+            'msg': f"invalid command: '{action}'"
+        }, 400
 
     # check if timestamp header exists
     if 'x-slack-request-timestamp' in request.headers:
@@ -140,13 +157,17 @@ def time(action: str):
             ).execute()
         )
 
-        send_msg_to_slack(
-            msg='Timestamp saved!',
+        # todo: fix this part!!
+        slack_response = send_msg_to_slack(
+            action=action,
+            user_id=request.form['user_id'],
             channel_id=request.form['channel_id']
         )
 
+        logging.info(slack_response)
+
         return {
-            'status': 'Success',
+            'status': 'success',
             'msg': 'Timestamp saved'
         }, 200
 
@@ -154,6 +175,5 @@ def time(action: str):
         logging.exception(e)
         return {
             'status': 'failed',
-            'msg': 'Failed to save timestamp to database! Please contact Client Solutions',
-            'error': e
+            'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
         }, 500
