@@ -48,19 +48,22 @@ slack_form_items = [
 
 
 #
-def send_msg_to_slack(msg: str, channel_id: str) -> None:
+def send_msg_to_slack(action: str, channel_id: str) -> None:
     '''Respond back to Slack on the same channel where the user sent the command'''
 
     try:
         response = client.chat_postMessage(
             channel=channel_id,
-            text=msg
+            text=f'You have clocked {action}.'
         )
         logging.info(response)
     except SlackApiError as e:
-        # You will get a SlackApiError if 'ok' is False
         assert e.response['error']
         logging.error(e)
+        return {
+            'status': 'failed',
+            'msg': e
+        }, 400
 
 
 #
@@ -76,9 +79,11 @@ def convert_timestamp(timestamp: str):
 
 
 # main route to be used by slack
-@app.route('/clock-in', methods=['POST'])
-def clock_in():
+@app.route('/time/<str:action>', methods=['POST'])
+def time(action: str):
     '''Read data sent from Slack then push to db'''
+
+    logging.info(f'User wants to {action}')
 
     # check if timestamp header exists
     if 'x-slack-request-timestamp' in request.headers:
