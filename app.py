@@ -29,6 +29,7 @@ client = WebClient(token=slack_token)
 # main flask instance
 app = Flask(__name__)
 
+# expected form item passed by Slack via slash commands
 slack_form_items = [
     'token',
     'team_id',
@@ -38,7 +39,7 @@ slack_form_items = [
     'user_id',
     'user_name',
     'command',
-    'text',
+    'text',  # can be empty
     'api_app_id',
     'is_enterprise_install',
     'response_url',
@@ -48,30 +49,25 @@ slack_form_items = [
 
 #
 def send_msg_to_slack(msg: str, channel_id: str) -> None:
-    '''Responds back to a provided channel'''
+    '''Respond back to Slack on the same channel where the user sent the command'''
 
     try:
         response = client.chat_postMessage(
             channel=channel_id,
             text=msg
         )
-
         logging.info(response)
-
     except SlackApiError as e:
         # You will get a SlackApiError if 'ok' is False
         assert e.response['error']
         logging.error(e)
 
 
-# convert epoch time to human time
+#
 def convert_timestamp(timestamp: str):
-    '''Convert Slack's timestamp into human readable MIL time format'''
+    '''Convert Slack's timestamp into human readable PH time in MIL format'''
 
-    # Create a timezone-aware datetime object for Philippine Time
     philippine_tz = pytz.timezone('Asia/Manila')
-
-    # Convert the timestamp to Philippine Standard Time
     philippine_time = datetime.fromtimestamp(
         int(timestamp),
         tz=philippine_tz
@@ -82,7 +78,7 @@ def convert_timestamp(timestamp: str):
 # main route to be used by slack
 @app.route('/clock-in', methods=['POST'])
 def clock_in():
-    '''Read data sent from Slack then push to db.'''
+    '''Read data sent from Slack then push to db'''
 
     # check if timestamp header exists
     if 'x-slack-request-timestamp' in request.headers:
@@ -104,8 +100,9 @@ def clock_in():
                 'msg': err_msg
             }, 400
 
+    # try parse timestamp
+    # this will probably never throw but just in case Slack messes up
     try:
-        # try parse timestamp
         int(slack_timestamp)
     except ValueError as e:
         logging.error(e)
@@ -138,7 +135,10 @@ def clock_in():
             ).execute()
         )
 
-        # send_msg_to_slack(msg='Timestamp saved!', channel_id=request.form['channel_id'])
+        send_msg_to_slack(
+            msg='Timestamp saved!',
+            channel_id=request.form['channel_id']
+        )
 
         return {
             'status': 'Success',
