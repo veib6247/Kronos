@@ -59,24 +59,24 @@ actions = [
 
 
 #
-def send_msg_to_slack(action: str, user_id: str, channel_id: str):
+def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
     '''Respond back to Slack on the same channel where the user sent the command'''
 
     match action:
         case 'clock-in':
-            response_text = f'<@{user_id}> has *clocked in* :clock1:'
+            response_text = f'<@{user_id}> has *clocked in* :clock1: _{text}_'
         case 'clock-out':
-            response_text = f'<@{user_id}> has *clocked out* :house:'
+            response_text = f'<@{user_id}> has *clocked out* :house: _{text}_'
         case 'break-15':
-            response_text = f'<@{user_id}> went on a *15 minutes break* :coffee:'
+            response_text = f'<@{user_id}> went on a *15 minutes break* :coffee: _{text}_'
         case 'break-30':
-            response_text = f'<@{user_id}> went on a *30 minutes break* :coffee:'
+            response_text = f'<@{user_id}> went on a *30 minutes break* :coffee: _{text}_'
         case 'break-60':
-            response_text = f'<@{user_id}> went on a *60 minutes break* :coffee:'
+            response_text = f'<@{user_id}> went on a *60 minutes break* :coffee: _{text}_'
         case 'break-90':
-            response_text = f'<@{user_id}> went on a *90 minutes break* :coffee:'
+            response_text = f'<@{user_id}> went on a *90 minutes break* :coffee: _{text}_'
         case 'back':
-            response_text = f'<@{user_id}> is *back from break*'
+            response_text = f'<@{user_id}> is *back from break* _{text}_'
         case _:
             response_text = f'<@{user_id}> used an unknown command: *{action}*'
 
@@ -181,7 +181,8 @@ def time(action: str):
         slack_response = send_msg_to_slack(
             action=action,
             user_id=request.form['user_id'],
-            channel_id=request.form['channel_id']
+            channel_id=request.form['channel_id'],
+            text=request.form['text']
         )
 
         print(slack_response)
