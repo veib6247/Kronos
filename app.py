@@ -61,14 +61,13 @@ actions = [
 def send_msg_to_slack(action: str, user_id: str, channel_id: str):
     '''Respond back to Slack on the same channel where the user sent the command'''
 
-    if action == 'in' or action == 'out':
-        response_text = f'{user_id} have clocked {action}'
+    if action == 'clock-in' or action == 'clock-out':
+        response_text = f'{user_id} have {action}'
     else:
         response_text = 'others'
 
     logging.info(response_text)
 
-    # todo: reinstall app to Slack workspace for further testing
     try:
         response = client.chat_postMessage(
             channel=channel_id,
@@ -164,6 +163,7 @@ def time(action: str):
             channel_id=request.form['channel_id']
         )
 
+        print(slack_response)
         logging.info(slack_response)
 
         return {
@@ -177,3 +177,22 @@ def time(action: str):
             'status': 'failed',
             'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
         }, 500
+
+
+#
+@app.route('/slack_test', methods=['GET'])
+def slack_test():
+    try:
+        response = client.chat_postMessage(
+            channel='C06AKRJ0D5E',
+            text='This is a test msg'
+        )
+
+        logging.info(response)
+        print(response)
+        return 'This worked!', 200
+
+    except SlackApiError as e:
+        print(e)
+        logging.error(e)
+        return 'welp', 500
