@@ -64,19 +64,19 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str):
 
     match action:
         case 'clock-in':
-            response_text = f'<@{user_id}> has clocked in. :clock1:'
+            response_text = f'<@{user_id}> has *clocked in* :clock1:'
         case 'clock-out':
-            response_text = f'<@{user_id}> has clocked out. :house:'
+            response_text = f'<@{user_id}> has *clocked out* :house:'
         case 'break-15':
-            response_text = f'<@{user_id}> went on a 15 minutes break. :coffee:'
+            response_text = f'<@{user_id}> went on a *15 minutes break* :coffee:'
         case 'break-30':
-            response_text = f'<@{user_id}> went on a 30 minutes break. :coffee:'
+            response_text = f'<@{user_id}> went on a *30 minutes break* :coffee:'
         case 'break-60':
-            response_text = f'<@{user_id}> went on a 60 minutes break. :coffee:'
+            response_text = f'<@{user_id}> went on a *60 minutes break* :coffee:'
         case 'break-90':
-            response_text = f'<@{user_id}> went on a 90 minutes break. :coffee:'
+            response_text = f'<@{user_id}> went on a *90 minutes break* :coffee:'
         case _:
-            response_text = f'<@{user_id}> used an unknown command: {action}'
+            response_text = f'<@{user_id}> used an unknown command: *{action}*'
 
     try:
         response = client.chat_postMessage(
