@@ -48,8 +48,8 @@ slack_form_items = [
 
 # list of valid url param actions
 actions = [
-    'in',
-    'out',
+    'clock-in',
+    'clock-out',
     'break-15',
     'break-30',
     'break-60',
