@@ -185,7 +185,7 @@ def time(action: str):
         print(slack_response)
         logging.info(slack_response)
 
-        return None, 200
+        return '', 200
 
     except Exception as e:
         logging.exception(e)
