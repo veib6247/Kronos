@@ -64,21 +64,26 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
 
     match action:
         case 'clock-in':
-            response_text = f'<@{user_id}> has *clocked in* :clock1: _{text}_'
+            response_text = f'<@{user_id}> has *clocked in* :clock1:'
         case 'clock-out':
-            response_text = f'<@{user_id}> has *clocked out* :house: _{text}_'
+            response_text = f'<@{user_id}> has *clocked out* :house:'
         case 'break-15':
-            response_text = f'<@{user_id}> went on a *15 minutes break* :coffee: _{text}_'
+            response_text = f'<@{user_id}> went on a *15 minutes break* :coffee:'
         case 'break-30':
-            response_text = f'<@{user_id}> went on a *30 minutes break* :coffee: _{text}_'
+            response_text = f'<@{user_id}> went on a *30 minutes break* :coffee:'
         case 'break-60':
-            response_text = f'<@{user_id}> went on a *60 minutes break* :coffee: _{text}_'
+            response_text = f'<@{user_id}> went on a *60 minutes break* :coffee:'
         case 'break-90':
-            response_text = f'<@{user_id}> went on a *90 minutes break* :coffee: _{text}_'
+            response_text = f'<@{user_id}> went on a *90 minutes break* :coffee:'
         case 'back':
-            response_text = f'<@{user_id}> is *back from break* _{text}_'
+            response_text = f'<@{user_id}> is *back from break*'
         case _:
             response_text = f'<@{user_id}> used an unknown command: *{action}*'
+
+    # append user note at the end of response_text is user added any
+    # underscore to italize
+    if text:
+        response_text = response_text + f' _{text}_'
 
     try:
         response = client.chat_postMessage(
