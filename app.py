@@ -53,7 +53,8 @@ actions = [
     'break-15',
     'break-30',
     'break-60',
-    'break-90'
+    'break-90',
+    'back'
 ]
 
 
@@ -61,22 +62,31 @@ actions = [
 def send_msg_to_slack(action: str, user_id: str, channel_id: str):
     '''Respond back to Slack on the same channel where the user sent the command'''
 
-    if action == 'clock-in' or action == 'clock-out':
-        response_text = f'{user_id} have {action}'
-    else:
-        response_text = 'others'
-
-    logging.info(response_text)
+    match action:
+        case 'clock-in':
+            response_text = f'<@{user_id}> has clocked in. :clock1:'
+        case 'clock-out':
+            response_text = f'<@{user_id}> has clocked out. :house:'
+        case 'break-15':
+            response_text = f'<@{user_id}> went on a 15 minutes break. :coffee:'
+        case 'break-30':
+            response_text = f'<@{user_id}> went on a 30 minutes break. :coffee:'
+        case 'break-60':
+            response_text = f'<@{user_id}> went on a 60 minutes break. :coffee:'
+        case 'break-90':
+            response_text = f'<@{user_id}> went on a 90 minutes break. :coffee:'
+        case _:
+            response_text = f'<@{user_id}> used an unknown command: {action}'
 
     try:
         response = client.chat_postMessage(
             channel=channel_id,
             blocks=[
                 {
-                    "type": "section",
-                    "text": {
-                            "type": "plain_text",
-                            "text": "This is a plain text section block."
+                    'type': 'section',
+                    'text': {
+                            'type': 'mrkdwn',
+                            'text': response_text
                     }
                 }
             ]
