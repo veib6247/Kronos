@@ -71,7 +71,16 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str):
     try:
         response = client.chat_postMessage(
             channel=channel_id,
-            text=response_text
+            blocks=[
+                {
+                    "type": "section",
+                    "text": {
+                            "type": "plain_text",
+                            "text": "This is a plain text section block."
+                    }
+                }
+            ]
+
         )
         return response
     except SlackApiError as e:
@@ -156,7 +165,7 @@ def time(action: str):
             ).execute()
         )
 
-        # todo: fix this part!!
+        # Ensure that the app is added in the Slack channel's integration tab for it to work!
         slack_response = send_msg_to_slack(
             action=action,
             user_id=request.form['user_id'],
@@ -177,22 +186,3 @@ def time(action: str):
             'status': 'failed',
             'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
         }, 500
-
-
-#
-@app.route('/slack_test', methods=['GET'])
-def slack_test():
-    try:
-        response = client.chat_postMessage(
-            channel='C06AKRJ0D5E',
-            text='This is a test msg'
-        )
-
-        logging.info(response)
-        print(response)
-        return 'This worked!', 200
-
-    except SlackApiError as e:
-        print(e)
-        logging.error(e)
-        return 'welp', 500
