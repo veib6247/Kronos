@@ -158,13 +158,13 @@ def time(action: str):
         )
 
         # todo: fix this part!!
-        # slack_response = send_msg_to_slack(
-        #     action=action,
-        #     user_id=request.form['user_id'],
-        #     channel_id=request.form['channel_id']
-        # )
+        slack_response = send_msg_to_slack(
+            action=action,
+            user_id=request.form['user_id'],
+            channel_id=request.form['channel_id']
+        )
 
-        # logging.info(slack_response)
+        logging.info(slack_response)
 
         return {
             'status': 'success',
