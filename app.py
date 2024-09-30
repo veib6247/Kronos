@@ -83,7 +83,7 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
     # append user note at the end of response_text is user added any
     # underscore to italize
     if text:
-        response_text = response_text + f' "_{text}_"'
+        response_text = response_text + f' ~ "_{text}_"'
 
     try:
         response = client.chat_postMessage(
