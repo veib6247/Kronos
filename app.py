@@ -15,6 +15,9 @@ logging.basicConfig(
     level=logging.INFO
 )
 
+# app mode
+app_mode: str = os.environ.get('APP_MODE')
+
 
 # init supabase
 load_dotenv()
@@ -183,15 +186,15 @@ def time(action: str):
         )
 
         # Ensure that the app is added in the Slack channel's integration tab for it to work!
-        slack_response = send_msg_to_slack(
-            action=action,
-            user_id=request.form['user_id'],
-            channel_id=request.form['channel_id'],
-            text=request.form['text']
-        )
-
-        print(slack_response)
-        logging.info(slack_response)
+        # only run slack call on prod
+        if app_mode == 'prod':
+            slack_response = send_msg_to_slack(
+                action=action,
+                user_id=request.form['user_id'],
+                channel_id=request.form['channel_id'],
+                text=request.form['text']
+            )
+            logging.info(slack_response)
 
         return '', 200
 
