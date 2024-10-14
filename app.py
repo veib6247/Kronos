@@ -98,6 +98,30 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
                             'type': 'mrkdwn',
                             'text': response_text
                     }
+                },
+
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "View Schedule"
+                            },
+                            "value": "view_schedule",
+                            "action_id": "button_click_schedule"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Check Tasks"
+                            },
+                            "value": "check_tasks",
+                            "action_id": "button_click_tasks"
+                        }
+                    ]
                 }
             ]
 
