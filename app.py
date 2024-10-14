@@ -228,7 +228,10 @@ def interactions():
     payload: dict = json.loads(request.form['payload'])
     action_id = payload['actions'][0]['action_id']
 
-    return f'Action ID: {action_id}', 200
+    if action_id == 'button-go':
+        return '', 200
+
+    return '', 400
 
 
 # handler for displaying the app buttons interactions
