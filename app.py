@@ -100,7 +100,6 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
                             'text': response_text
                     }
                 },
-
                 {
                     "type": "actions",
                     "elements": [
@@ -235,6 +234,6 @@ def time(action: str):
 @app.route('/interactions', methods=['POST'])
 def interactions():
     payload: dict = json.loads(request.form['payload'])
-    action_id: str = payload['actions']['action_id']
+    action_id = payload['actions']['action_id']
 
     return f'Action ID: {action_id}', 200
