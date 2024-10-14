@@ -29,6 +29,8 @@ supabase: Client = create_client(url, key)
 # init slack sdk
 slack_token = os.environ['SLACK_BOT_TOKEN']
 client = WebClient(token=slack_token)
+select_block_id: str = 'BfE1N'
+
 
 # main flask instance
 app = Flask(__name__)
@@ -120,7 +122,7 @@ def interactions():
                         'channel_name': payload['channel']['name'],
                         'user_id': payload['user']['id'],
                         'user_name': payload['user']['username'],
-                        'command': payload['state']['values']['BfE1N']['select-action']['selected_option']['value'],
+                        'command': payload['state']['values'][select_block_id]['select-action']['selected_option']['value'],
                         'text': '',
                         'api_app_id': payload['api_app_id'],
                         'is_enterprise_install': payload['is_enterprise_install'],
@@ -141,7 +143,7 @@ def interactions():
             # only run slack call on prod
             if app_mode == 'prod':
                 slack_response = send_msg_to_slack(
-                    action=payload['state']['values']['BfE1N']['select-action']['selected_option']['value'],
+                    action=payload['state']['values'][select_block_id]['select-action']['selected_option']['value'],
                     user_id=payload['user']['id'],
                     channel_id=payload['channel']['id'],
                     text=''
@@ -193,7 +195,7 @@ def services():
                     "type": "mrkdwn",
                     "text": "Please select a timestamp action to log..."
                 },
-                "block_id": "BfE1N",
+                "block_id": select_block_id,
                 "accessory": {
                     "type": "static_select",
                     "placeholder": {
