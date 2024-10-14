@@ -235,7 +235,7 @@ def interactions():
 @app.route('/services', methods=['POST'])
 def services():
     client.chat_postMessage(
-        channel='channel_id',
+        channel='C06AKRJ0D5E',
         blocks=[
             {
                 'type': 'section',
