@@ -242,7 +242,7 @@ def services():
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Please select an action:"
+                    "text": "Welcome to *Kronos*, please select an action"
                 },
                 "accessory": {
                     "type": "static_select",
