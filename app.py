@@ -229,3 +229,37 @@ def interactions():
     action_id = payload['actions'][0]['action_id']
 
     return f'Action ID: {action_id}', 200
+
+
+# handler for app buttons interactions
+@app.route('/services', methods=['POST'])
+def services():
+    try:
+        response = client.chat_postMessage(
+            channel='channel_id',
+            blocks=[
+                {
+                    'type': 'section',
+                    'text': {
+                        'type': 'mrkdwn',
+                        'text': 'test text'
+                    }
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                    "type": "plain_text",
+                                    "text": "Break 15 mins."
+                            },
+                            "value": "break-15",
+                            "action_id": "break-15"
+                        }
+                    ]
+                }]
+        )
+        return response
+    except SlackApiError as e:
+        return e
