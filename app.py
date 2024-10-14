@@ -187,6 +187,7 @@ def time(action: str):
 
         # Ensure that the app is added in the Slack channel's integration tab for it to work!
         # only run slack call on prod
+        logging.info(f'App is in {app_mode} mode')
         if app_mode == 'prod':
             slack_response = send_msg_to_slack(
                 action=action,
