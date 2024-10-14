@@ -179,7 +179,7 @@ def services():
                 "elements": [
                     {
                         "type": "plain_text",
-                        "text": "Payreto's timestamp logging app",
+                        "text": "Payreto's timestamp logging app, you may reuse the form below as needed.",
                         "emoji": True
                     }
                 ]
@@ -191,7 +191,7 @@ def services():
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Please select a timestamp to log..."
+                    "text": "Please select a timestamp action to log..."
                 },
                 "block_id": "BfE1N",
                 "accessory": {
