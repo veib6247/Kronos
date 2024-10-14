@@ -211,14 +211,7 @@ def time(action: str):
 @app.route('/shortcut', methods=['POST'])
 def shortcut():
     if app_mode == 'prod':
-        slack_response = send_msg_to_slack(
-            action=request.form['callback_id'],
-            user_id=request.form['user_id'],
-            channel_id='C06AKRJ0D5E',
-            text='This is a test'
-        )
-        logging.info(slack_response)
-        return '', 200
+        return 'hello', 200
 
     else:
         return 'I am in dev mode', 200
