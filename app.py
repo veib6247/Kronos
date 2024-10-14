@@ -289,9 +289,9 @@ def services():
                     "type": "mrkdwn",
                     "text": "Welcome to *Kronos*, please select an action"
                 },
+                "block_id": "BfE1N",
                 "accessory": {
                     "type": "static_select",
-                    "block_id": "BfE1N",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Action"
