@@ -210,8 +210,10 @@ def time(action: str):
 # quick test route for shortcut
 @app.route('/shortcut', methods=['POST'])
 def shortcut():
+    payload = request.get_json()
+    print(payload)
+
     if app_mode == 'prod':
-        print(f'{request.form['callback_id']}')
         return '', 200
 
     else:
