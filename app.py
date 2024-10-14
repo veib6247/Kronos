@@ -1,9 +1,9 @@
-import json
 import logging
 import os
 from datetime import datetime
 
 import pytz
+import requests
 from dotenv import load_dotenv
 from flask import Flask, request
 from slack_sdk import WebClient
@@ -196,6 +196,16 @@ def time(action: str):
                 text=request.form['text']
             )
             logging.info(slack_response)
+
+        # todo: try responding via URL
+        r = requests.post(
+            request.form['response_url'],
+            data={
+                "text": "this is a test response",
+                "response_type": "in_channel"
+            }
+        )
+        print(r.text)
 
         return '', 200
 
