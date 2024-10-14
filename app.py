@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from datetime import datetime
@@ -210,11 +211,11 @@ def time(action: str):
 # quick test route for shortcut
 @app.route('/shortcut', methods=['POST'])
 def shortcut():
-    payload = request.get_json()
+    payload: dict = json.loads(request.form('payload'))
     print(payload)
 
     if app_mode == 'prod':
-        return '', 200
+        return f'Callback ID: {payload.get['callback_id']}', 200
 
     else:
         return 'I am in dev mode', 200
