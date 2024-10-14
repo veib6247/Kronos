@@ -167,10 +167,31 @@ def services():
         channel=request.form['channel_id'],
         blocks=[
             {
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
+                    "text": "Welcome to Kronos!",
+                    "emoji": True
+                }
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "plain_text",
+                        "text": "Payreto's timestamp logging app",
+                        "emoji": True
+                    }
+                ]
+            },
+            {
+                "type": "divider"
+            },
+            {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Welcome to :clock1: *Kronos*, please select a timestamp to perform..."
+                    "text": "Please select a timestamp to log..."
                 },
                 "block_id": "BfE1N",
                 "accessory": {
@@ -228,7 +249,7 @@ def services():
                                 "text": ":house: Clock Out"
                             },
                             "value": "clock-out"
-                        },
+                        }
                     ],
                     "action_id": "select-action"
                 }
@@ -247,6 +268,7 @@ def services():
                         "action_id": "button-go"
                     }
                 ]
-            }]
+            }
+        ]
     )
     return '', 200
