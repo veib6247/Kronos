@@ -47,11 +47,11 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
         case 'break-30':
             response_text = f'<@{user_id}> went on a *30 minutes break* :coffee:'
         case 'break-60':
-            response_text = f'<@{user_id}> went on a *60 minutes break* :coffee:'
+            response_text = f'<@{user_id}> went on a *60 minutes break* :knife_fork_plate:'
         case 'break-90':
             response_text = f'<@{user_id}> went on a *90 minutes break* :coffee:'
         case 'back':
-            response_text = f'<@{user_id}> is *back from break*'
+            response_text = f'<@{user_id}> is *back from break* :arrow_backward:'
         case _:
             response_text = f'<@{user_id}> used an unknown command: *{action}*'
 
@@ -190,42 +190,42 @@ def services():
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 15 mins."
+                                "text": "Break 15 mins. :coffee:"
                             },
                             "value": "break-15"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 30 mins."
+                                "text": "Break 30 mins. :coffee:"
                             },
                             "value": "break-30"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 60 mins. / Lunch"
+                                "text": "Break 60 mins. / Lunch :knife_fork_plate:"
                             },
                             "value": "break-60"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 90 mins."
+                                "text": "Break 90 mins. :coffee:"
                             },
                             "value": "break-90"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Back from break"
+                                "text": "Back from break :arrow_backward:"
                             },
                             "value": "back"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Clock Out"
+                                "text": "Clock Out :house:"
                             },
                             "value": "clock-out"
                         },
