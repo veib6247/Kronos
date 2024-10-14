@@ -170,7 +170,7 @@ def services():
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Welcome to :clock1: *Kronos*, please select a timestamp to perform"
+                    "text": "Welcome to :clock1: *Kronos*, please select a timestamp to perform..."
                 },
                 "block_id": "BfE1N",
                 "accessory": {
