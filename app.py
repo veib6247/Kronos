@@ -231,18 +231,18 @@ def interactions():
     return f'Action ID: {action_id}', 200
 
 
-# handler for app buttons interactions
+# handler for displaying the app buttons interactions
 @app.route('/services', methods=['POST'])
 def services():
     client.chat_postEphemeral(
         user=request.form['user_id'],
-        channel='C06AKRJ0D5E',
+        channel=request.form['channel_id'],
         blocks=[
             {
                 'type': 'section',
                 'text': {
                     'type': 'mrkdwn',
-                    'text': 'test text'
+                    'text': 'Welcome! I am your bot Kronos, please select your actions below:'
                 }
             },
             {
@@ -252,11 +252,65 @@ def services():
                         "type": "button",
                         "text": {
                                 "type": "plain_text",
+                                "text": "Clock In"
+                        },
+                        "value": "clock-in",
+                        "action_id": "clock-in"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                                "type": "plain_text",
                                 "text": "Break 15 mins."
                         },
                         "value": "break-15",
                         "action_id": "break-15"
-                    }
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                                "type": "plain_text",
+                                "text": "Break 30 mins."
+                        },
+                        "value": "break-30",
+                        "action_id": "break-30"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                                "type": "plain_text",
+                                "text": "Break 60 mins."
+                        },
+                        "value": "break-60",
+                        "action_id": "break-60"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                                "type": "plain_text",
+                                "text": "Break 90 mins."
+                        },
+                        "value": "break-90",
+                        "action_id": "break-90"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                                "type": "plain_text",
+                                "text": "Back from break"
+                        },
+                        "value": "back",
+                        "action_id": "back"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                                "type": "plain_text",
+                                "text": "Clock Out"
+                        },
+                        "value": "clock-out",
+                        "action_id": "clock-out"
+                    },
                 ]
             }]
     )
