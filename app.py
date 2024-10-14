@@ -235,6 +235,6 @@ def time(action: str):
 @app.route('/interactions', methods=['POST'])
 def interactions():
     payload: dict = json.loads(request.form['payload'])
-    print(payload)
+    action_id = payload['actions']['action_id']
 
-    return 'hello', 200
+    return f'Action ID: {action_id}', 200
