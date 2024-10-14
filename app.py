@@ -260,6 +260,7 @@ def services():
                     ]
                 }]
         )
-        return response
+        logging.info(response)
+        return '', 200
     except SlackApiError as e:
-        return e
+        return e, 500
