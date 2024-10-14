@@ -33,34 +33,6 @@ client = WebClient(token=slack_token)
 # main flask instance
 app = Flask(__name__)
 
-# expected form item passed by Slack via slash commands
-slack_form_items = [
-    'token',
-    'team_id',
-    'team_domain',
-    'channel_id',
-    'channel_name',
-    'user_id',
-    'user_name',
-    'command',
-    'text',  # can be empty
-    'api_app_id',
-    'is_enterprise_install',
-    'response_url',
-    'trigger_id'
-]
-
-# list of valid url param actions
-actions = [
-    'clock-in',
-    'clock-out',
-    'break-15',
-    'break-30',
-    'break-60',
-    'break-90',
-    'back'
-]
-
 
 #
 def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
