@@ -211,11 +211,5 @@ def time(action: str):
 # quick test route for shortcut
 @app.route('/shortcut', methods=['POST'])
 def shortcut():
-    payload: dict = json.loads(request.form('payload'))
-    print(payload)
-
-    if app_mode == 'prod':
-        return f'Callback ID: {payload.get['callback_id']}', 200
-
-    else:
-        return 'I am in dev mode', 200
+    payload: dict = json.loads(request.form['payload'])
+    return f"Hello {payload['user']['username']}", 200
