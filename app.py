@@ -234,7 +234,7 @@ def interactions():
 # handler for app buttons interactions
 @app.route('/services', methods=['POST'])
 def services():
-    client.chat_postMessage(
+    client.chat_postEphemeral(
         user=request.form['user_id'],
         channel='C06AKRJ0D5E',
         blocks=[
