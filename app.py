@@ -190,42 +190,42 @@ def services():
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 15 mins. :coffee:"
+                                "text": ":coffee: Break 15 mins."
                             },
                             "value": "break-15"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 30 mins. :coffee:"
+                                "text": ":coffee: Break 30 mins."
                             },
                             "value": "break-30"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 60 mins. / Lunch :knife_fork_plate:"
+                                "text": ":knife_fork_plate: Break 60 mins. / Lunch"
                             },
                             "value": "break-60"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Break 90 mins. :coffee:"
+                                "text": ":coffee: Break 90 mins."
                             },
                             "value": "break-90"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Back from break :arrow_backward:"
+                                "text": ":arrow_backward: Back from break"
                             },
                             "value": "back"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "Clock Out :house:"
+                                "text": ":house: Clock Out"
                             },
                             "value": "clock-out"
                         },
