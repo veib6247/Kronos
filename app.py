@@ -205,3 +205,20 @@ def time(action: str):
             'status': 'failed',
             'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
         }, 500
+
+
+# quick test route for shortcut
+@app.route('/shortcut', methods=['POST'])
+def shortcut():
+    if app_mode == 'prod':
+        slack_response = send_msg_to_slack(
+            action=request.form['callback_id'],
+            user_id=request.form['user_id'],
+            channel_id='C06AKRJ0D5E',
+            text='This is a test'
+        )
+        logging.info(slack_response)
+        return '', 200
+
+    else:
+        return 'I am in dev mode', 200
