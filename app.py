@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from datetime import datetime
@@ -233,4 +234,7 @@ def time(action: str):
 # handler for app buttons interactions
 @app.route('/interactions', methods=['POST'])
 def interactions():
+    payload: dict = json.loads(request.form['payload'])
+    print(payload)
+
     return 'hello', 200
