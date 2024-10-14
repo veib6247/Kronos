@@ -287,7 +287,7 @@ def services():
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Welcome to *Kronos*, please select an action"
+                    "text": "Welcome to *Kronos*, please select a timestamp to perform"
                 },
                 "block_id": "BfE1N",
                 "accessory": {
