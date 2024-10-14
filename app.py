@@ -242,7 +242,7 @@ def services():
                 'type': 'section',
                 'text': {
                     'type': 'mrkdwn',
-                    'text': 'Welcome! I am your bot Kronos, please select your actions below:'
+                    'text': 'Welcome! I am your bot Kronos, please select your actions below.'
                 }
             },
             {
@@ -252,68 +252,46 @@ def services():
                 "type": "actions",
                 "elements": [
                     {
-                        "type": "button",
-                        "text": {
-                                "type": "plain_text",
-                                "text": "Clock In"
+                        "type": "static_select",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "Select an action",
                         },
-                        "value": "clock-in",
-                        "action_id": "clock-in"
+                        "options": [
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Clock In",
+                                },
+                                "value": "clock-in"
+                            },
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Break 15",
+                                },
+                                "value": "break-15"
+                            },
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Break 30",
+                                },
+                                "value": "break-30"
+                            }
+                        ],
+                        "action_id": "select-action"
                     },
                     {
                         "type": "button",
                         "text": {
                                 "type": "plain_text",
-                                "text": "Break 15 mins."
+                                "text": "Go"
                         },
-                        "value": "break-15",
-                        "action_id": "break-15"
+                        "value": "go",
+                        "action_id": "btn-go"
                     },
-                    {
-                        "type": "button",
-                        "text": {
-                                "type": "plain_text",
-                                "text": "Break 30 mins."
-                        },
-                        "value": "break-30",
-                        "action_id": "break-30"
-                    },
-                    {
-                        "type": "button",
-                        "text": {
-                                "type": "plain_text",
-                                "text": "Break 60 mins."
-                        },
-                        "value": "break-60",
-                        "action_id": "break-60"
-                    },
-                    {
-                        "type": "button",
-                        "text": {
-                                "type": "plain_text",
-                                "text": "Break 90 mins."
-                        },
-                        "value": "break-90",
-                        "action_id": "break-90"
-                    },
-                    {
-                        "type": "button",
-                        "text": {
-                                "type": "plain_text",
-                                "text": "Back from break"
-                        },
-                        "value": "back",
-                        "action_id": "back"
-                    },
-                    {
-                        "type": "button",
-                        "text": {
-                                "type": "plain_text",
-                                "text": "Clock Out"
-                        },
-                        "value": "clock-out",
-                        "action_id": "clock-out"
-                    },
+
                 ]
             }]
     )
