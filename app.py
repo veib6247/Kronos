@@ -246,6 +246,9 @@ def services():
                 }
             },
             {
+                "type": "divider"
+            },
+            {
                 "type": "actions",
                 "elements": [
                     {
