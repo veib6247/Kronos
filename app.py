@@ -211,7 +211,8 @@ def time(action: str):
 @app.route('/shortcut', methods=['POST'])
 def shortcut():
     if app_mode == 'prod':
-        return 'hello', 200
+        print(f'{request.form['callback_id']}')
+        return '', 200
 
     else:
         return 'I am in dev mode', 200
