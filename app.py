@@ -81,7 +81,6 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
 #
 def convert_timestamp(timestamp: str):
     '''Convert Slack's timestamp into human readable PH time in MIL format'''
-
     philippine_tz = pytz.timezone('Asia/Manila')
     philippine_time = datetime.fromtimestamp(
         int(timestamp),
@@ -90,9 +89,10 @@ def convert_timestamp(timestamp: str):
     return str(philippine_time.strftime('%Y-%m-%d %H:%M:%S'))
 
 
-# handler for app buttons interactions
+#
 @app.route('/interactions', methods=['POST'])
 def interactions():
+    '''Handler for  interactions based on selected action'''
     payload: dict = json.loads(request.form['payload'])
     action_id = payload['actions'][0]['action_id']
 
@@ -161,9 +161,10 @@ def interactions():
     return '', 200
 
 
-# handler for displaying the app buttons interactions
+#
 @app.route('/services', methods=['POST'])
 def services():
+    '''Handler for displaying the app buttons interactions'''
     client.chat_postEphemeral(
         user=request.form['user_id'],
         channel=request.form['channel_id'],
