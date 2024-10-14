@@ -271,6 +271,16 @@ def interactions():
                 'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
             }, 500
 
+        # only run slack call on prod
+        if app_mode == 'prod':
+            slack_response = send_msg_to_slack(
+                action=payload['state']['values']['BfE1N']['select-action']['selected_option']['value'],
+                user_id=payload['user']['id'],
+                channel_id=payload['channel']['id'],
+                text=''
+            )
+            logging.info(slack_response)
+
         return '', 200
 
     return '', 200
