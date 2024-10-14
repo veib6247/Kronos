@@ -264,14 +264,14 @@ def interactions():
                     }
                 ).execute()
             )
-            return '', 200
-
         except Exception as e:
             logging.exception(e)
             return {
                 'status': 'failed',
                 'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
             }, 500
+
+        return '', 200
 
     return '', 200
 
@@ -291,6 +291,7 @@ def services():
                 },
                 "accessory": {
                     "type": "static_select",
+                    "block_id": "BfE1N",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Action"
