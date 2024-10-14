@@ -234,33 +234,29 @@ def interactions():
 # handler for app buttons interactions
 @app.route('/services', methods=['POST'])
 def services():
-    try:
-        response = client.chat_postMessage(
-            channel='channel_id',
-            blocks=[
-                {
-                    'type': 'section',
-                    'text': {
-                        'type': 'mrkdwn',
-                        'text': 'test text'
+    client.chat_postMessage(
+        channel='channel_id',
+        blocks=[
+            {
+                'type': 'section',
+                'text': {
+                    'type': 'mrkdwn',
+                    'text': 'test text'
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                                "type": "plain_text",
+                                "text": "Break 15 mins."
+                        },
+                        "value": "break-15",
+                        "action_id": "break-15"
                     }
-                },
-                {
-                    "type": "actions",
-                    "elements": [
-                        {
-                            "type": "button",
-                            "text": {
-                                    "type": "plain_text",
-                                    "text": "Break 15 mins."
-                            },
-                            "value": "break-15",
-                            "action_id": "break-15"
-                        }
-                    ]
-                }]
-        )
-        logging.info(response)
-        return '', 200
-    except SlackApiError as e:
-        return e, 500
+                ]
+            }]
+    )
+    return '', 200
