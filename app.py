@@ -228,3 +228,9 @@ def time(action: str):
             'status': 'failed',
             'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
         }, 500
+
+
+# handler for app buttons interactions
+@app.route('/interactions', methods=['POST'])
+def interactions():
+    return 'hello', 200
