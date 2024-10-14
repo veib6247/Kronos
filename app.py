@@ -188,7 +188,6 @@ def time(action: str):
 
         # Ensure that the app is added in the Slack channel's integration tab for it to work!
         # only run slack call on prod
-        print(f'App is in {app_mode} mode')
         if app_mode == 'prod':
             slack_response = send_msg_to_slack(
                 action=action,
@@ -206,10 +205,3 @@ def time(action: str):
             'status': 'failed',
             'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
         }, 500
-
-
-# quick test route for shortcut
-@app.route('/shortcut', methods=['POST'])
-def shortcut():
-    payload: dict = json.loads(request.form['payload'])
-    return f"Hello {payload['user']['username']}", 200
