@@ -228,10 +228,52 @@ def interactions():
     payload: dict = json.loads(request.form['payload'])
     action_id = payload['actions'][0]['action_id']
 
+    # only handle if action ID is from button
     if action_id == 'button-go':
-        return '', 200
+        # check if timestamp header exists
+        if 'x-slack-request-timestamp' in request.headers:
+            slack_timestamp = request.headers['x-slack-request-timestamp']
+        else:
+            logging.error('Timestamp missing from Slack')
+            return {
+                'status': 'failed',
+                'msg': 'Timestamp missing from Slack http header'
+            }, 400
 
-    return '', 400
+        # insert to DB
+        try:
+            (
+                supabase.table('Slack Timestamp')
+                .insert(
+                    {
+                        'x-slack-request-timestamp': slack_timestamp,
+                        'token': payload['token'],
+                        'team_id': payload['team']['id'],
+                        'team_domain': payload['team']['domain'],
+                        'channel_id': payload['channel']['id'],
+                        'channel_name': payload['channel']['name'],
+                        'user_id': payload['user']['id'],
+                        'user_name': payload['user']['username'],
+                        'command': payload['state']['values']['BfE1N']['select-action']['selected_option']['value'],
+                        'text': '',
+                        'api_app_id': payload['api_app_id'],
+                        'is_enterprise_install': payload['is_enterprise_install'],
+                        'response_url': payload['response_url'],
+                        'trigger_id': payload['trigger_id'],
+                        'timestamp': convert_timestamp(slack_timestamp)
+                    }
+                ).execute()
+            )
+            return '', 200
+
+        except Exception as e:
+            logging.exception(e)
+            return {
+                'status': 'failed',
+                'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
+            }, 500
+
+    return '', 200
 
 
 # handler for displaying the app buttons interactions
