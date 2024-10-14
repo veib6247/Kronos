@@ -239,59 +239,84 @@ def services():
         channel=request.form['channel_id'],
         blocks=[
             {
-                'type': 'section',
-                'text': {
-                    'type': 'mrkdwn',
-                    'text': 'Welcome! I am your bot Kronos, please select your actions below.'
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Welcome! I am *Kronos*, please select an action:"
+                },
+                "accessory": {
+                    "type": "static_select",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Action"
+                    },
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Clock In"
+                            },
+                            "value": "clock-in"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Break 15 mins."
+                            },
+                            "value": "break-15"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Break 30 mins."
+                            },
+                            "value": "break-30"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Break 60 mins. / Lunch"
+                            },
+                            "value": "break-60"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Break 90 mins."
+                            },
+                            "value": "break-90"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Back from break"
+                            },
+                            "value": "back"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Clock Out"
+                            },
+                            "value": "clock-out"
+                        },
+                    ],
+                    "action_id": "select-action"
                 }
-            },
-            {
-                "type": "divider"
             },
             {
                 "type": "actions",
                 "elements": [
                     {
-                        "type": "static_select",
-                        "placeholder": {
-                            "type": "plain_text",
-                            "text": "Select an action",
-                        },
-                        "options": [
-                            {
-                                "text": {
-                                    "type": "plain_text",
-                                    "text": "Clock In",
-                                },
-                                "value": "clock-in"
-                            },
-                            {
-                                "text": {
-                                    "type": "plain_text",
-                                    "text": "Break 15",
-                                },
-                                "value": "break-15"
-                            },
-                            {
-                                "text": {
-                                    "type": "plain_text",
-                                    "text": "Break 30",
-                                },
-                                "value": "break-30"
-                            }
-                        ],
-                        "action_id": "select-action"
-                    },
-                    {
                         "type": "button",
                         "text": {
-                                "type": "plain_text",
-                                "text": "Go"
+                            "type": "plain_text",
+                            "text": "Go"
                         },
+                        "style": "primary",
                         "value": "go",
-                        "action_id": "btn-go"
-                    },
-
+                        "action_id": "button-go"
+                    }
                 ]
             }]
     )
