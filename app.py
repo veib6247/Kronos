@@ -74,6 +74,8 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
             }]
         )
         return response
+
+    # return exception, because why not?
     except SlackApiError as e:
         return e
 
@@ -148,7 +150,14 @@ def interactions():
                     channel_id=payload['channel']['id'],
                     text=''
                 )
-                logging.info(slack_response)
+
+                # looks legit
+                if isinstance(slack_response, SlackApiError):
+                    logging.exception(slack_response)
+
+                else:
+                    logging.info(slack_response)
+
         except Exception as e:
             logging.exception(e)
             return {
