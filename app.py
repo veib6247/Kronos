@@ -92,6 +92,16 @@ def convert_timestamp(timestamp: str):
 
 
 #
+def build_response(isSuccess: bool, msg: str) -> dict[str, str]:
+    '''build dictionary response'''
+    status: str = 'success' if isSuccess else 'failed'
+    return {
+        'status': status,
+        'msg': msg
+    }
+
+
+#
 @app.route('/interactions', methods=['POST'])
 def interactions():
     '''Handler for  interactions based on selected action'''
@@ -105,10 +115,7 @@ def interactions():
             slack_timestamp = request.headers['x-slack-request-timestamp']
         else:
             logging.error('Timestamp missing from Slack')
-            return {
-                'status': 'failed',
-                'msg': 'Timestamp missing from Slack http header'
-            }, 400
+            return build_response(False, 'Timestamp missing from Slack http header'), 400
 
         # insert to DB
         try:
@@ -136,10 +143,7 @@ def interactions():
             )
         except Exception as e:
             logging.exception(e)
-            return {
-                'status': 'failed',
-                'msg': 'Failed to save timestamp to database! Please contact Client Solutions'
-            }, 500
+            return build_response(False, 'Failed to save timestamp to database! Please contact Client Solutions'), 500
 
         try:
             # only run slack call on prod
@@ -150,17 +154,13 @@ def interactions():
                     channel_id=payload['channel']['id'],
                     text=''
                 )
-
                 # looks legit
                 logging.exception(slack_response) if isinstance(
                     slack_response, SlackApiError) else logging.info(slack_response)
 
         except Exception as e:
             logging.exception(e)
-            return {
-                'status': 'failed',
-                'msg': 'Failed to call Slack API'
-            }, 500
+            return build_response(False, 'Failed to call Slack API'), 500
 
         return '', 200
 
