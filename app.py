@@ -84,13 +84,13 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
 
 #
 def convert_timestamp(timestamp: str):
-    '''Convert Slack's timestamp into human readable PH time in MIL format'''
+    '''Convert Slack's timestamp into human readable PH time in military format'''
     philippine_tz = pytz.timezone('Asia/Manila')
     philippine_time = datetime.fromtimestamp(
-        int(timestamp),
+        float(timestamp),
         tz=philippine_tz
     )
-    return str(philippine_time.strftime('%Y-%m-%d %H:%M:%S'))
+    return philippine_time.strftime('%Y-%m-%d %H:%M:%S')
 
 
 #
