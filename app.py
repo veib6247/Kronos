@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import unittest
 from datetime import datetime
 
 import pytz
@@ -281,3 +282,24 @@ def services():
         ]
     )
     return '', 200
+
+
+#
+class UnitTests(unittest.TestCase):
+    '''Just some basic unit tests'''
+
+    def test_build_response(self):
+        self.assertEqual(
+            build_response(True, 'Test'),
+            {'status': 'success', 'msg': 'Test'}
+        )
+
+    def test_timestamp_conversion(self):
+        self.assertEqual(
+            convert_timestamp('1727689594'),
+            '2024-09-30 17:46:34'
+        )
+
+
+if __name__ == '__main__':
+    unittest.main()
