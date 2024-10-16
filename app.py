@@ -152,11 +152,8 @@ def interactions():
                 )
 
                 # looks legit
-                if isinstance(slack_response, SlackApiError):
-                    logging.exception(slack_response)
-
-                else:
-                    logging.info(slack_response)
+                logging.exception(slack_response) if isinstance(
+                    slack_response, SlackApiError) else logging.info(slack_response)
 
         except Exception as e:
             logging.exception(e)
