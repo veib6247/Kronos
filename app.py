@@ -65,6 +65,7 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
 
     try:
         response = client.chat_postMessage(
+            text='',
             channel=channel_id,
             blocks=[{
                 'type': 'section',
@@ -173,6 +174,7 @@ def interactions():
 def services():
     '''Handler for displaying the app buttons interactions'''
     client.chat_postEphemeral(
+        text='',
         user=request.form['user_id'],
         channel=request.form['channel_id'],
         blocks=[
