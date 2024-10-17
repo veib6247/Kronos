@@ -4,6 +4,7 @@ from datetime import datetime
 
 import pytz
 from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 
 # init slack sdk
 slack_token = os.environ['SLACK_BOT_TOKEN']
@@ -24,6 +25,51 @@ def build_response(isSuccess: bool, msg: str) -> dict[str, str]:
     '''Build dictionary response'''
     status: str = 'success' if isSuccess else 'failed'
     return {'status': status, 'msg': msg}
+
+
+#
+def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
+    '''Respond back to Slack on the same channel where the user sent the command'''
+    match action:
+        case 'clock-in':
+            response_text = f'<@{user_id}> has *clocked in* :clock1:'
+        case 'clock-out':
+            response_text = f'<@{user_id}> has *clocked out* :house:'
+        case 'break-15':
+            response_text = f'<@{user_id}> went on a *15 minutes break* :coffee:'
+        case 'break-30':
+            response_text = f'<@{user_id}> went on a *30 minutes break* :coffee:'
+        case 'break-60':
+            response_text = f'<@{user_id}> went on a *60 minutes break* :knife_fork_plate:'
+        case 'break-90':
+            response_text = f'<@{user_id}> went on a *90 minutes break* :coffee:'
+        case 'back':
+            response_text = f'<@{user_id}> is *back from break* :arrow_backward:'
+        case _:
+            response_text = f'<@{user_id}> used an unknown command: *{action}*'
+
+    # append user note at the end of response_text is user added any
+    # underscore to italize
+    if text:
+        response_text = response_text + f' ~ "_{text}_"'
+
+    try:
+        response = client.chat_postMessage(
+            text='',
+            channel=channel_id,
+            blocks=[{
+                'type': 'section',
+                'text': {
+                    'type': 'mrkdwn',
+                    'text': response_text
+                }
+            }]
+        )
+        return response
+
+    # return exception, because why not?
+    except SlackApiError as e:
+        return e
 
 
 #
