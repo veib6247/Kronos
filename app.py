@@ -8,7 +8,7 @@ from slack_sdk.errors import SlackApiError
 from supabase import Client, create_client
 
 from utils import (build_response, convert_timestamp, select_block_id,
-                   send_ephemeral, send_msg_to_slack)
+                   send_msg, send_msg_ephemeral)
 
 # init logging
 logging.basicConfig(
@@ -79,7 +79,7 @@ def interactions():
         try:
             # only run slack call on prod
             if app_mode == 'prod':
-                slack_response = send_msg_to_slack(
+                slack_response = send_msg(
                     action=payload['state']['values'][select_block_id]['select-action']['selected_option']['value'],
                     user_id=payload['user']['id'],
                     channel_id=payload['channel']['id'],
@@ -102,5 +102,5 @@ def interactions():
 @app.route('/services', methods=['POST'])
 def services():
     '''Handler for displaying the app buttons interactions'''
-    send_ephemeral(request.form['user_id'], request.form['channel_id'])
+    send_msg_ephemeral(request.form['user_id'], request.form['channel_id'])
     return '', 200

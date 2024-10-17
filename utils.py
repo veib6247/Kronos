@@ -27,7 +27,7 @@ def build_response(isSuccess: bool, msg: str) -> dict[str, str]:
 
 
 #
-def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
+def send_msg(action: str, user_id: str, channel_id: str, text: str):
     '''Respond back to Slack on the same channel where the user sent the command'''
     match action:
         case 'clock-in':
@@ -72,7 +72,7 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
 
 
 #
-def send_ephemeral(user: str, channel: str) -> None:
+def send_msg_ephemeral(user: str, channel: str) -> None:
     '''Sends an ephemeral msg to Slack to display available choices to the user'''
     client.chat_postEphemeral(
         text='',
