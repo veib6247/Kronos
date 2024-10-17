@@ -6,7 +6,10 @@ from utils import build_response, convert_timestamp
 class UnitTests(unittest.TestCase):
     '''Unit tests for the helper functions'''
 
-    test_string: str = 'this is a test string'
+    #
+    def setUp(self) -> None:
+        self.test_string: str = 'this is a test string'
+        return super().setUp()
 
     #
     def test_build_response_success(self):
