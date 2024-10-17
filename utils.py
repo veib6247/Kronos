@@ -75,7 +75,7 @@ def send_msg(action: str, user_id: str, channel_id: str, text: str):
 def send_msg_ephemeral(user: str, channel: str) -> None:
     '''Sends an ephemeral msg to Slack to display available choices to the user'''
     client.chat_postEphemeral(
-        text='',
+        text='Welcome to Kronos!',
         user=user,
         channel=channel,
         blocks=[
