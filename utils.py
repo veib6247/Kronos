@@ -1,4 +1,3 @@
-
 import os
 from datetime import datetime
 
@@ -55,7 +54,7 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
 
     try:
         response = client.chat_postMessage(
-            text='',
+            text=response_text,
             channel=channel_id,
             blocks=[{
                 'type': 'section',

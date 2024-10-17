@@ -40,6 +40,7 @@ def interactions():
 
     # only handle if action ID is from button
     if action_id == 'button-go':
+
         # check if timestamp header exists
         if 'x-slack-request-timestamp' in request.headers:
             slack_timestamp = request.headers['x-slack-request-timestamp']
