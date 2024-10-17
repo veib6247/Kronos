@@ -7,18 +7,25 @@ from utils import build_response, convert_timestamp
 class UnitTests(unittest.TestCase):
     '''Unit tests for the helper functions'''
 
-    def test_build_response(self):
-        '''Tests the "build_response" function'''
-        msg: str = 'this is a test string'
+    test_string: str = 'this is a test string'
+
+    #
+    def test_build_response_success(self):
+        '''Asserts a success response in the "build_response" function'''
         self.assertEqual(
-            build_response(True, msg),
-            {'status': 'success', 'msg': msg}
-        )
-        self.assertEqual(
-            build_response(False, msg),
-            {'status': 'failed', 'msg': msg}
+            build_response(True, self.test_string),
+            {'status': 'success', 'msg': self.test_string}
         )
 
+    #
+    def test_build_response_failed(self):
+        '''Asserts a failed response in the "build_response" function'''
+        self.assertEqual(
+            build_response(False, self.test_string),
+            {'status': 'failed', 'msg': self.test_string}
+        )
+
+    #
     def test_timestamp_conversion(self):
         '''Tests the "convert_timestamp" function'''
         self.assertEqual(
