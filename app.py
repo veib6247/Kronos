@@ -1,15 +1,14 @@
 import json
 import logging
 import os
-import unittest
-from datetime import datetime
 
-import pytz
 from dotenv import load_dotenv
 from flask import Flask, request
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from supabase import Client, create_client
+
+from utils import build_response, convert_timestamp, send_ephemeral
 
 # init logging
 logging.basicConfig(
@@ -83,24 +82,6 @@ def send_msg_to_slack(action: str, user_id: str, channel_id: str, text: str):
 
 
 #
-def convert_timestamp(tmstmp: str):
-    '''Convert Slack's timestamp into human readable PH time in military format'''
-    ph_tz = pytz.timezone('Asia/Manila')
-    ph_time = datetime.fromtimestamp(float(tmstmp), tz=ph_tz)
-    return ph_time.strftime('%Y-%m-%d %H:%M:%S')
-
-
-#
-def build_response(isSuccess: bool, msg: str) -> dict[str, str]:
-    '''build dictionary response'''
-    status: str = 'success' if isSuccess else 'failed'
-    return {
-        'status': status,
-        'msg': msg
-    }
-
-
-#
 @app.route('/interactions', methods=['POST'])
 def interactions():
     '''Handler for  interactions based on selected action'''
@@ -170,146 +151,5 @@ def interactions():
 @app.route('/services', methods=['POST'])
 def services():
     '''Handler for displaying the app buttons interactions'''
-    client.chat_postEphemeral(
-        text='',
-        user=request.form['user_id'],
-        channel=request.form['channel_id'],
-        blocks=[
-            {
-                "type": "header",
-                "text": {
-                    "type": "plain_text",
-                    "text": "Welcome to Kronos!",
-                    "emoji": True
-                }
-            },
-            {
-                "type": "context",
-                "elements": [
-                    {
-                        "type": "plain_text",
-                        "text": "Payreto's timestamp logging app, you may reuse the form below as needed.",
-                        "emoji": True
-                    }
-                ]
-            },
-            {
-                "type": "divider"
-            },
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": "Please select a timestamp action to log..."
-                },
-                "block_id": select_block_id,
-                "accessory": {
-                    "type": "static_select",
-                    "placeholder": {
-                        "type": "plain_text",
-                        "text": "Action"
-                    },
-                    "options": [
-                        {
-                            "text": {
-                                "type": "plain_text",
-                                "text": ":clock1: Clock In"
-                            },
-                            "value": "clock-in"
-                        },
-                        {
-                            "text": {
-                                "type": "plain_text",
-                                "text": ":coffee: Break 15 mins."
-                            },
-                            "value": "break-15"
-                        },
-                        {
-                            "text": {
-                                "type": "plain_text",
-                                "text": ":coffee: Break 30 mins."
-                            },
-                            "value": "break-30"
-                        },
-                        {
-                            "text": {
-                                "type": "plain_text",
-                                "text": ":knife_fork_plate: Break 60 mins. / Lunch"
-                            },
-                            "value": "break-60"
-                        },
-                        {
-                            "text": {
-                                "type": "plain_text",
-                                "text": ":coffee: Break 90 mins."
-                            },
-                            "value": "break-90"
-                        },
-                        {
-                            "text": {
-                                "type": "plain_text",
-                                "text": ":arrow_backward: Back from break"
-                            },
-                            "value": "back"
-                        },
-                        {
-                            "text": {
-                                "type": "plain_text",
-                                "text": ":house: Clock Out"
-                            },
-                            "value": "clock-out"
-                        }
-                    ],
-                    "action_id": "select-action"
-                }
-            },
-            {
-                "type": "actions",
-                "elements": [
-                    {
-                        "type": "button",
-                        "text": {
-                            "type": "plain_text",
-                            "text": "Go"
-                        },
-                        "style": "primary",
-                        "value": "go",
-                        "action_id": "button-go"
-                    }
-                ]
-            }
-        ]
-    )
+    send_ephemeral(request.form['user_id'], request.form['channel_id'])
     return '', 200
-
-
-#
-class UnitTests(unittest.TestCase):
-    '''Unit tests for the helper functions'''
-
-    def test_build_response(self):
-        '''Tests the "build_response" function'''
-        msg: str = 'this is a test string'
-        self.assertEqual(
-            build_response(True, msg),
-            {'status': 'success', 'msg': msg}
-        )
-        self.assertEqual(
-            build_response(False, msg),
-            {'status': 'failed', 'msg': msg}
-        )
-
-    def test_timestamp_conversion(self):
-        '''Tests the "convert_timestamp" function'''
-        self.assertEqual(
-            convert_timestamp('1727689594'),
-            '2024-09-30 17:46:34'
-        )
-        self.assertEqual(
-            convert_timestamp('1727689723'),
-            '2024-09-30 17:48:43'
-        )
-
-
-if __name__ == '__main__':
-    unittest.main()
