@@ -1,4 +1,3 @@
-#
 import unittest
 
 from utils import build_response, convert_timestamp
